@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>GRIVON — Campus Signal System</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="/static/style.css"
+  >
+
+</head>
+
+
+<body>
+
+  <div class="noise"></div>
+
+
+  <!-- =========================
+       TOP NAVIGATION
+  ========================== -->
+
+  <header class="topbar">
+
+    <a
+      class="logo"
+      href="#top"
+    >
+
+      <span>G</span>
+
+      <strong>GRIVON</strong>
+
+    </a>
+
+
+    <nav>
+
+      <a href="#report">
+        Report
+      </a>
+
+      <a href="#signals">
+        Signals
+      </a>
+
+      <a href="#admin">
+        Control room
+      </a>
+
+    </nav>
+
+
+    <div class="system">
+
+      <i></i>
+
+      SYSTEM ONLINE
+
+    </div>
+
+  </header>
+
+
+
+  <main id="top">
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="intro">
+
+      <div class="intro-copy">
+
+        <div class="mono-label">
+          CAMPUS SIGNAL SYSTEM / 01
+        </div>
+
+
+        <h1>
+          Turn campus<br>
+          <em>friction into action.</em>
+        </h1>
+
+
+        <p>
+
+          GRIVON turns everyday campus complaints
+          into structured, prioritised signals —
+          with AI-assisted triage, severity scoring
+          and a visible resolution trail.
+
+        </p>
+
+
+        <div class="intro-actions">
+
+          <a
+            class="button primary"
+            href="#report"
+          >
+
+            Raise a signal
+
+            <span>↗</span>
+
+          </a>
+
+
+          <a
+            class="button text"
+            href="#signals"
+          >
+
+            Explore live board
+
+          </a>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- SIGNAL VISUAL -->
+
+      <div
+        class="signal-visual"
+        aria-hidden="true"
+      >
+
+        <div class="ring ring-a"></div>
+
+        <div class="ring ring-b"></div>
+
+        <div class="ring ring-c"></div>
+
+
+        <div class="core">
+
+          <span>
+            GRIVON
+          </span>
+
+          <b>
+            LIVE
+          </b>
+
+        </div>
+
+
+        <div class="scan-card card-a">
+
+          <small>
+            SEVERITY
+          </small>
+
+          <strong>
+            92
+          </strong>
+
+          <span>
+            HIGH SIGNAL
+          </span>
+
+        </div>
+
+
+        <div class="scan-card card-b">
+
+          <small>
+            QUEUE
+          </small>
+
+          <strong id="heroQueue">
+            0
+          </strong>
+
+          <span>
+            OPEN REPORTS
+          </span>
+
+        </div>
+
+
+        <div class="scan-card card-c">
+
+          <small>
+            IMPACT
+          </small>
+
+          <strong id="heroPoints">
+            0
+          </strong>
+
+          <span>
+            POINTS
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         TICKER
+    ========================== -->
+
+    <section class="ticker">
+
+      <span>
+        LIVE CAMPUS FEED
+      </span>
+
+      <b>
+        AI TRIAGE
+      </b>
+
+      <b>
+        SEVERITY 0—100
+      </b>
+
+      <b>
+        COMMUNITY POINTS
+      </b>
+
+      <b>
+        RESOLUTION TRACKING
+      </b>
+
+    </section>
+
+
+
+    <!-- =========================
+         METRICS
+    ========================== -->
+
+    <section
+      class="metrics"
+      aria-label="Dashboard metrics"
+    >
+
+      <div class="metric">
+
+        <small>
+          REPORTS
+        </small>
+
+        <strong id="total">
+          0
+        </strong>
+
+        <span>
+          Total signals logged
+        </span>
+
+      </div>
+
+
+      <div class="metric alert">
+
+        <small>
+          HIGH SIGNALS
+        </small>
+
+        <strong id="high">
+          0
+        </strong>
+
+        <span>
+          Priority requires attention
+        </span>
+
+      </div>
+
+
+      <div class="metric">
+
+        <small>
+          ACTIVE
+        </small>
+
+        <strong id="progress">
+          0
+        </strong>
+
+        <span>
+          Currently in progress
+        </span>
+
+      </div>
+
+
+      <div class="metric green">
+
+        <small>
+          RESOLVED
+        </small>
+
+        <strong id="resolved">
+          0
+        </strong>
+
+        <span>
+          Closed successfully
+        </span>
+
+      </div>
+
+
+      <div class="metric blue">
+
+        <small>
+          IMPACT POINTS
+        </small>
+
+        <strong id="points">
+          0
+        </strong>
+
+        <span>
+          Earned by resolution
+        </span>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         REPORT FORM
+    ========================== -->
+
+    <section
+      class="section"
+      id="report"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <div class="mono-label">
+            02 / RAISE A SIGNAL
+          </div>
+
+          <h2>
+            Something broken?
+          </h2>
+
+        </div>
+
+
+        <p>
+          Give GRIVON enough context to triage it.
+        </p>
+
+      </div>
+
+
+
+      <form
+        id="issueForm"
+        enctype="multipart/form-data"
+        class="report-shell"
+      >
+
+        <div class="form-number">
+          01
+        </div>
+
+
+        <label>
+
+          What is the issue?
+
+          <input
+            name="title"
+            placeholder="e.g. Water leaking beside Physics Lab"
+            required
+          >
+
+        </label>
+
+
+        <div class="form-number">
+          02
+        </div>
+
+
+        <label>
+
+          Where is it?
+
+          <input
+            name="location"
+            placeholder="e.g. North Campus / Block A"
+            required
+          >
+
+        </label>
+
+
+        <div class="form-number">
+          03
+        </div>
+
+
+        <label class="wide">
+
+          Describe the situation
+
+          <textarea
+            name="description"
+            rows="6"
+            placeholder="What happened, what is affected, and anything someone responding should know?"
+            required
+          ></textarea>
+
+        </label>
+
+
+        <div class="form-number">
+          04
+        </div>
+
+
+        <label>
+
+          Evidence
+
+          <span class="optional">
+            optional
+          </span>
+
+          <input
+            id="image"
+            name="image"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+          >
+
+        </label>
+
+
+        <div
+          id="preview"
+          class="preview"
+        ></div>
+
+
+        <div class="form-foot">
+
+          <span>
+
+            GRIVON will estimate
+
+            <b>
+              category · priority · severity
+            </b>
+
+          </span>
+
+
+          <button
+            class="button primary"
+            type="submit"
+          >
+
+            Run triage
+
+            <span>
+              →
+            </span>
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+
+
+    <!-- =========================
+         LIVE SIGNAL BOARD
+    ========================== -->
+
+    <section
+      class="section"
+      id="signals"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <div class="mono-label">
+            03 / LIVE SIGNAL BOARD
+          </div>
+
+          <h2>
+            What the campus is telling us.
+          </h2>
+
+        </div>
+
+
+        <p>
+          Sorted by urgency. Updated live.
+        </p>
+
+      </div>
+
+
+
+      <div class="filters">
+
+        <select id="statusFilter">
+
+          <option value="">
+            All status
+          </option>
+
+          <option>
+            Reported
+          </option>
+
+          <option>
+            In Progress
+          </option>
+
+          <option>
+            Resolved
+          </option>
+
+        </select>
+
+
+        <select id="categoryFilter">
+
+          <option value="">
+            All categories
+          </option>
+
+          <option>
+            Safety
+          </option>
+
+          <option>
+            Electrical
+          </option>
+
+          <option>
+            Plumbing
+          </option>
+
+          <option>
+            Cleanliness
+          </option>
+
+          <option>
+            IT Support
+          </option>
+
+          <option>
+            Furniture
+          </option>
+
+          <option>
+            General
+          </option>
+
+        </select>
+
+
+        <select id="priorityFilter">
+
+          <option value="">
+            All priority
+          </option>
+
+          <option>
+            High
+          </option>
+
+          <option>
+            Medium
+          </option>
+
+          <option>
+            Low
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        id="issueGrid"
+        class="issue-grid"
+      ></div>
+
+    </section>
+
+
+
+    <!-- =========================
+         ADMIN CONTROL ROOM
+    ========================== -->
+
+    <section
+      class="section"
+      id="admin"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <div class="mono-label">
+            04 / CONTROL ROOM
+          </div>
+
+          <h2>
+            See the system, not just the complaints.
+          </h2>
+
+        </div>
+
+
+        <span class="demo">
+          PROTOTYPE CONTROL ROOM
+        </span>
+
+      </div>
+
+
+
+      <div class="control-stats">
+
+        <div>
+
+          <small>
+            ALL SIGNALS
+          </small>
+
+          <strong id="adminTotal">
+            0
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <small>
+            HIGH PRIORITY
+          </small>
+
+          <strong id="adminHigh">
+            0
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <small>
+            ACTIVE
+          </small>
+
+          <strong id="adminProgress">
+            0
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <small>
+            RESOLVED
+          </small>
+
+          <strong id="adminResolved">
+            0
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <small>
+            IMPACT POINTS
+          </small>
+
+          <strong id="adminPoints">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="control-grid">
+
+        <div class="control-panel">
+
+          <div class="panel-head">
+
+            <h3>
+              Signal mix
+            </h3>
+
+            <span>
+              BY CATEGORY
+            </span>
+
+          </div>
+
+
+          <div id="categoryStats"></div>
+
+        </div>
+
+
+
+        <div class="control-panel">
+
+          <div class="panel-head">
+
+            <h3>
+              Recent activity
+            </h3>
+
+            <span>
+              LAST REPORTS
+            </span>
+
+          </div>
+
+
+          <div id="recentActivity"></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         DESIGN LOGIC
+    ========================== -->
+
+    <section
+      class="section philosophy"
+      id="how"
+    >
+
+      <div class="mono-label">
+        05 / DESIGN LOGIC
+      </div>
+
+
+      <h2>
+        Report → triage → act → prove it was fixed.
+      </h2>
+
+
+      <div class="logic-grid">
+
+        <article>
+
+          <span>
+            01
+          </span>
+
+          <h3>
+            Signal
+          </h3>
+
+          <p>
+            A student gives the system a real
+            campus problem, not a vague complaint.
+          </p>
+
+        </article>
+
+
+        <article>
+
+          <span>
+            02
+          </span>
+
+          <h3>
+            Triage
+          </h3>
+
+          <p>
+            AI-assisted classification turns free
+            text into category, priority and severity.
+          </p>
+
+        </article>
+
+
+        <article>
+
+          <span>
+            03
+          </span>
+
+          <h3>
+            Action
+          </h3>
+
+          <p>
+            The status changes as the issue moves
+            from reported to active work.
+          </p>
+
+        </article>
+
+
+        <article>
+
+          <span>
+            04
+          </span>
+
+          <h3>
+            Proof
+          </h3>
+
+          <p>
+            Resolution is visible and awards
+            community points based on priority.
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <div
+    id="toast"
+    role="status"
+  ></div>
+
+
+  <footer>
+
+    <strong>
+      GRIVON
+    </strong>
+
+    <span>
+      Campus Signal System · Hackathon Prototype
+    </span>
+
+  </footer>
+
+
+  <script src="/static/app.js"></script>
+
+</body>
+
+</html>
