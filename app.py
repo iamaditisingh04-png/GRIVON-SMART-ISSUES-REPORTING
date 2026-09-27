@@ -7,7 +7,8 @@ import uuid
 from pathlib import Path
 from datetime import datetime, timezone
 
-from flask import Flask, jsonify, request, render_template, send_from_directory
+from flask import Flask, request, jsonify, render_template, session, redirect, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 
@@ -26,7 +27,8 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 ALLOWED_FILES = {"png", "jpg", "jpeg", "webp"}
 
-app = Flask(__name__)
+app=Flask(__name__)
+app.secret_key = "GRIVON_HACKATHON_SECRET_KEY"
 app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
 
 
@@ -45,59 +47,44 @@ def get_db():
 
 
 def init_database():
-    connection = get_db()
+    c=get_db()
+    c.execute('''CREATE TABLE IF NOT EXISTS issues(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        location TEXT NOT NULL,
+        category TEXT NOT NULL,
+        priority TEXT NOT NULL,
+        severity INTEGER NOT NULL DEFAULT 50,
+        severity_reason TEXT DEFAULT '',
+        status TEXT NOT NULL DEFAULT 'Reported',
+        points_awarded INTEGER NOT NULL DEFAULT 0,
+        image_name TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+    )''')
 
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS issues (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cols={x['name'] for x in c.execute('PRAGMA table_info(issues)')}
 
-            title TEXT NOT NULL,
-            description TEXT NOT NULL,
-            location TEXT NOT NULL,
+    for n,s in {
+        'severity':'ALTER TABLE issues ADD COLUMN severity INTEGER NOT NULL DEFAULT 50',
+        'severity_reason':"ALTER TABLE issues ADD COLUMN severity_reason TEXT DEFAULT ''",
+        'points_awarded':'ALTER TABLE issues ADD COLUMN points_awarded INTEGER NOT NULL DEFAULT 0'
+    }.items():
+        if n not in cols:
+            c.execute(s)
 
-            category TEXT NOT NULL,
-            priority TEXT NOT NULL,
+    c.execute('''CREATE TABLE IF NOT EXISTS users(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'student',
+        created_at TEXT NOT NULL
+    )''')
 
-            severity INTEGER NOT NULL DEFAULT 50,
-            severity_reason TEXT DEFAULT '',
-
-            status TEXT NOT NULL DEFAULT 'Reported',
-
-            points_awarded INTEGER NOT NULL DEFAULT 0,
-
-            image_name TEXT,
-
-            created_at TEXT NOT NULL,
-            updated_at TEXT NOT NULL
-        )
-    """)
-
-    # This allows older databases to keep working
-    columns = {
-        column["name"]
-        for column in connection.execute(
-            "PRAGMA table_info(issues)"
-        )
-    }
-
-    migrations = {
-        "severity":
-            "ALTER TABLE issues ADD COLUMN severity INTEGER NOT NULL DEFAULT 50",
-
-        "severity_reason":
-            "ALTER TABLE issues ADD COLUMN severity_reason TEXT DEFAULT ''",
-
-        "points_awarded":
-            "ALTER TABLE issues ADD COLUMN points_awarded INTEGER NOT NULL DEFAULT 0"
-    }
-
-    for column, command in migrations.items():
-
-        if column not in columns:
-            connection.execute(command)
-
-    connection.commit()
-    connection.close()
+    c.commit()
+    c.close()
 
 
 # -----------------------------
@@ -436,12 +423,99 @@ Issue description:
 # -----------------------------
 # HOME PAGE
 # -----------------------------
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email'].strip().lower()
+        password = request.form['password']
+
+        c = get_db()
+        user = c.execute(
+            'SELECT * FROM users WHERE email=?',
+            (email,)
+        ).fetchone()
+        c.close()
+
+        if user and check_password_hash(user['password'], password):
+            session['user_id'] = user['id']
+            session['user_name'] = user['name']
+            session['role'] = user['role']
+
+            return redirect(url_for('home'))
+
+        return render_template(
+            'login.html',
+            error='Invalid email or password'
+        )
+
+    return render_template('login.html')
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        name = request.form['name'].strip()
+        email = request.form['email'].strip().lower()
+        password = request.form['password']
+
+        if not name or not email or not password:
+            return render_template(
+                'signup.html',
+                error='Please fill in all fields'
+            )
+
+        hashed_password = generate_password_hash(password)
+
+        c = get_db()
+
+        try:
+            c.execute(
+                '''INSERT INTO users
+                   (name, email, password, role, created_at)
+                   VALUES (?, ?, ?, ?, ?)''',
+                (
+                    name,
+                    email,
+                    hashed_password,
+                    'student',
+                    datetime.now().isoformat()
+                )
+            )
+            c.commit()
+
+        except sqlite3.IntegrityError:
+            c.close()
+            return render_template(
+                'signup.html',
+                error='Email already registered'
+            )
+
+        c.close()
+
+        return redirect(url_for('login'))
+
+    return render_template('signup.html')
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
 
 @app.route("/")
+def landing():
+    if "user_id" in session:
+        return redirect(url_for("home"))
+    
+    return redirect(url_for("login"))
+
+@app.route("/home")
 def home():
-
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    
     return render_template("index.html")
-
 
 # -----------------------------
 # IMAGE ROUTE
@@ -941,11 +1015,10 @@ def admin_dashboard():
 # START
 # -----------------------------
 
-init_database()
-add_demo_data()
-
 
 if __name__ == "__main__":
+    init_database()
+    add_demo_data()
 
     app.run(
         debug=True

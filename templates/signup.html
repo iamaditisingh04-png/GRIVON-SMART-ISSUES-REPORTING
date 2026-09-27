@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GRIVON — Sign Up</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #0c0c0c;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            width: 400px;
+            padding: 42px;
+            background: #151515;
+            border: 1px solid #d6ff39;
+            border-radius: 18px;
+        }
+
+        h1 {
+            color: #d6ff39;
+            font-size: 42px;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0 15px;
+            box-sizing: border-box;
+            background: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #d6ff39;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        a {
+            color: #d6ff39;
+        }
+
+        .error {
+            color: #ff6b6b;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>GRIVON</h1>
+
+    <p>Create your account</p>
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            required
+        >
+
+        <input
+            type="email"
+            name="email"
+            placeholder="College Email"
+            required
+        >
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Create Password"
+            required
+        >
+
+        <button type="submit">
+            CREATE ACCOUNT →
+        </button>
+
+    </form>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <p>
+        Already have an account?
+        <a href="/login">Login</a>
+    </p>
+
+</div>
+
+</body>
+</html>

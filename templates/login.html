@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GRIVON — Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #0c0c0c;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            width: 400px;
+            padding: 42px;
+            background: #151515;
+            border: 1px solid #d6ff39;
+            border-radius: 18px;
+            box-shadow: 0 0 40px rgba(214,255,57,0.12);
+        }
+
+        .logo {
+            color: #d6ff39;
+            font-size: 42px;
+            font-weight: 900;
+        }
+
+        .tagline {
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: #222;
+            color: white;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #d6ff39;
+            color: black;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .error {
+            color: #ff6b6b;
+            margin-top: 15px;
+        }
+
+        .signup {
+            text-align: center;
+            margin-top: 22px;
+            color: #888;
+        }
+
+        a {
+            color: #d6ff39;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <div class="logo">GRIVON</div>
+
+    <div class="tagline">
+        Campus Signal System
+    </div>
+
+    <form method="POST">
+
+        <label>Email</label>
+        <input
+            type="email"
+            name="email"
+            placeholder="College email"
+            required
+        >
+
+        <label>Password</label>
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+        >
+
+        <button type="submit">
+            LOGIN →
+        </button>
+
+    </form>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <div class="signup">
+        New to GRIVON?
+        <a href="/signup">Create account</a>
+    </div>
+
+</div>
+
+</body>
+</html>
